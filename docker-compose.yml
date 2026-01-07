@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   n8n:
-    image: n8nio/n8n:latest
+    image: n8nio/n8n:latest-debian
+    container_name: n8n-docker
     restart: always
     ports:
       - "5678:5678"
@@ -11,12 +12,11 @@ services:
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - NODE_ENV=production
-      - WEBHOOK_URL=https://${N8N_HOST}/
+      - WEBHOOK_URL=${WEBHOOK_URL}
       - GENERIC_TIMEZONE=${TIMEZONE}
       - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
     volumes:
       - n8n_data:/home/node/.n8n
-      # Optional: Map a local folder if you want to use local files in workflows
       - /home/support/n8n:/files
 
 volumes:
