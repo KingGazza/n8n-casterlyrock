@@ -17,7 +17,7 @@ services:
     volumes:
       - n8n_data:/home/node/.n8n
       # Optional: Map a local folder if you want to use local files in workflows
-      - ./local_files:/files
+      - /home/support/n8n:/files
 
 volumes:
   n8n_data:
