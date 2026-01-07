@@ -1,0 +1,9 @@
+# Ignore the actual environment file
+.env
+
+# Ignore n8n local data if you map it to a folder
+n8n_data/
+local_files/
+
+# System files
+.DS_Store
