@@ -4,7 +4,7 @@ services:
   n8n:
     image: docker.n8n.io/n8nio/n8n
     container_name: n8n-docker
-    command: start --tunnel  #yes I know, only for testing
+    # Removed "start --tunnel" - cloudflared handles this now
     restart: always
     ports:
       - "5678:5678"
@@ -18,10 +18,20 @@ services:
       - N8N_ENCRYPTION_KEY=${ENCRYPTION_KEY}
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_RUNNERS_ENABLED=true
-      - N8N_SECURE_COOKIE=false   #yes I know. Not recommended
+      - N8N_SECURE_COOKIE=false
     volumes:
       - n8n_data:/home/node/.n8n
       - /home/support/n8n:/files
+
+  # The Cloudflare Tunnel Service
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: always
+    # Connects your n8n-docker container to your specific Cloudflare tunnel
+    command: tunnel run --token ${CLOUDFLARE_TOKEN}
+    depends_on:
+      - n8n
 
 volumes:
   n8n_data:
